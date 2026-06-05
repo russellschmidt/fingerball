@@ -1,0 +1,16 @@
+# Netlify config for Fingerball (Vite + React SPA / PWA)
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# If you connect the repo whose root is ~/Dev (not the fingerball folder),
+# uncomment the next line so Netlify builds from the subfolder:
+# base = "fingerball"
+
+# SPA fallback: every client-side route serves index.html so deep links
+# and refreshes work (e.g. /person/abc, /add).
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
