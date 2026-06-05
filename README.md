@@ -49,9 +49,11 @@ migration).
 
 ## Supabase setup (one-time)
 
-1. **Schema:** run `supabase/migrations/0001_init.sql` in the Supabase SQL Editor.
-   Creates all tables, the `merge_person` function, RLS policies, Realtime, and
-   the `people-photos` storage bucket.
+1. **Schema:** run the migrations in `supabase/migrations/` in order, in the
+   Supabase SQL Editor:
+   - `0001_init.sql` — tables, `merge_person`, RLS, Realtime, `people-photos` bucket.
+   - `0002_badges.sql` — sticky FINGERBALLER / FINGERBALLED badge columns + the
+     trigger that awards them at 5 up/down votes.
 2. **Auth → URL Configuration:**
    - Site URL: `https://fingerball.netlify.app`
    - Redirect URLs: `https://fingerball.netlify.app`, `http://localhost:5173`
@@ -127,3 +129,11 @@ photos into a few hundred KB.
 - **Disco mode** 🕺: tap the spinning finger-ball anywhere to toggle a rainbow
   dance-floor — animated gradient background, double-speed spin, wobbling cards,
   color-cycling logo, and a sparkle arpeggio. Tap again to turn it off.
+- **Badges**: hit 5 upvotes and a person's card is permanently stamped
+  **FINGERBALLER**; hit 5 downvotes and they get **FINGERBALLED** (crying bloody
+  finger). Badges are sticky — set by a DB trigger (`0002_badges.sql`), so they
+  persist even if votes change later.
+- **SCORED celebration**: adding a person fires a confetti burst + a giant
+  rubber-stamp THWACK before dropping you back to the feed.
+- **Power Rankings**: a 🏆 tab on the feed ranks everyone by score with
+  gold/silver/bronze medals.

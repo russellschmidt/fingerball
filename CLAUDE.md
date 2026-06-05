@@ -53,6 +53,19 @@ runs `compressImage()` (`src/lib/image.ts`, canvas-based, zero deps: resize to
 1280px + JPEG ~0.82, EXIF-aware, falls back to original) before uploading to the
 `people-photos` Supabase bucket.
 
+## Badges, rankings, celebration
+- **Persistent badges**: `people.is_fingerballer` / `is_fingerballed` (added in
+  `0002_badges.sql`). A `votes` trigger (`fingerball_update_badges`) OR-sets them
+  true at 5 up / 5 down votes — sticky, never unset. Client reads the flags
+  (Feed cards + PersonDetail render `.stamp.baller` / `.stamp.balled`, the latter
+  with `BloodyFinger`). Do NOT derive badges from live vote counts — persistence
+  is the whole point, so always read the DB columns. Re-run 0002 if you change
+  the threshold (it's hardcoded as 5 in the SQL).
+- **Power Rankings**: a `view` toggle in `Feed.tsx` ('feed' | 'rankings'); the
+  rankings list sorts by `scoreFor` (tiebreak `upvotesFor`) with medal tints.
+- **SCORED celebration**: `Celebration.tsx` (confetti + big stamp) shown for
+  ~1.2s on add before navigating back to the feed.
+
 ## Juice (sound/haptics/disco)
 `src/lib/fx.ts` = zero-asset Web Audio sound effects + `navigator.vibrate` haptics
 (Android only; iOS ignores vibrate). Call fx functions from inside the tap handler

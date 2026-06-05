@@ -64,6 +64,14 @@ export function scoreFor(votes: Vote[], personId: string): number {
   return votes.filter((v) => v.person_id === personId).reduce((a, v) => a + v.value, 0)
 }
 
+/** Number of upvotes (👍) a person has. */
+export function upvotesFor(votes: Vote[], personId: string): number {
+  return votes.filter((v) => v.person_id === personId && v.value === 1).length
+}
+
+/** Upvotes needed to earn the FINGERBALLER stamp. */
+export const FINGERBALLER_VOTES = 5
+
 export function myVote(votes: Vote[], personId: string, memberId: string | undefined): number {
   if (!memberId) return 0
   return votes.find((v) => v.person_id === personId && v.member_id === memberId)?.value ?? 0

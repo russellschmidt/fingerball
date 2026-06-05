@@ -5,6 +5,7 @@ import { useAuth } from '../auth'
 import { supabase } from '../lib/supabase'
 import { HAPPY, HAPPY_LABEL, OPINION, OPINION_LABEL } from '../lib/types'
 import { fxUp, fxDown, fxUndo } from '../lib/fx'
+import BloodyFinger from './BloodyFinger'
 
 export default function PersonDetail() {
   const { id } = useParams<{ id: string }>()
@@ -76,6 +77,12 @@ export default function PersonDetail() {
 
       <main className="detail">
         <div className="detail-head">
+          {person.is_fingerballer && <span className="stamp baller">Fingerballer</span>}
+          {person.is_fingerballed && (
+            <span className="stamp balled">
+              <BloodyFinger /> Fingerballed
+            </span>
+          )}
           {person.image_url ? (
             <img className="avatar big" src={person.image_url} alt={person.name} />
           ) : (

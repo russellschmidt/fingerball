@@ -345,6 +345,7 @@ select:focus {
   gap: 14px;
 }
 .card.person {
+  position: relative;
   display: flex;
   gap: 13px;
   align-items: stretch;
@@ -590,6 +591,7 @@ select:focus {
   gap: 20px;
 }
 .detail-head {
+  position: relative;
   display: flex;
   gap: 15px;
 }
@@ -643,6 +645,199 @@ section h4::before {
   border: 2px solid var(--ink);
   border-radius: 4px;
   background: var(--tangerine);
+}
+
+/* ---------- badge stamps (FINGERBALLER / FINGERBALLED) ---------- */
+.stamp {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 7px;
+  pointer-events: none;
+  background: var(--paper-2);
+  box-shadow: 0 0 0 2px rgba(255, 251, 242, 0.6);
+  animation: stamp-in 0.45s cubic-bezier(0.2, 1.6, 0.4, 1) both;
+}
+.stamp.baller {
+  color: #1c6b2e;
+  border: 2.5px solid #1c6b2e;
+  background: rgba(46, 158, 68, 0.16);
+}
+.stamp.balled {
+  color: #b00020;
+  border: 2.5px solid #b00020;
+  background: rgba(176, 0, 32, 0.12);
+}
+.stamp + .stamp {
+  top: 40px;
+}
+@keyframes stamp-in {
+  0% {
+    transform: rotate(-8deg) scale(2.6);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(-8deg) scale(1);
+    opacity: 1;
+  }
+}
+
+/* ---------- segmented toggle (Feed / Rankings) ---------- */
+.segmented {
+  display: flex;
+  gap: 9px;
+  margin-bottom: 14px;
+}
+.segmented button {
+  flex: 1;
+  padding: 11px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper-2);
+  font-family: var(--display);
+  font-weight: 800;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+}
+.segmented button.on {
+  background: var(--tangerine);
+  color: #fff;
+}
+.segmented button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 var(--ink);
+}
+
+/* ---------- power rankings ---------- */
+.ranks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.rank-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 13px;
+  background: var(--paper-2);
+  border: 2px solid var(--ink);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  animation: rise 0.4s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+}
+.rank-row:nth-child(1) {
+  background: #fff0c2;
+}
+.rank-row:nth-child(2) {
+  background: #ededf3;
+}
+.rank-row:nth-child(3) {
+  background: #f6ddc4;
+}
+.rank-num {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 20px;
+  min-width: 30px;
+  text-align: center;
+}
+.avatar.tiny {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+}
+.avatar.tiny.placeholder {
+  font-size: 17px;
+}
+.rank-name {
+  flex: 1;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 16px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rank-badge {
+  font-size: 16px;
+}
+
+/* ---------- SCORED celebration (confetti + stamp) ---------- */
+.celebrate {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+}
+.confetti {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.confetto {
+  position: absolute;
+  top: -12vh;
+  border-radius: 2px;
+  animation-name: confetti-fall;
+  animation-timing-function: ease-in;
+  animation-fill-mode: both;
+}
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(125vh) rotate(620deg);
+    opacity: 1;
+  }
+}
+.big-stamp {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(48px, 17vw, 92px);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--tangerine);
+  border: 7px solid var(--tangerine);
+  border-radius: 18px;
+  padding: 6px 22px;
+  background: rgba(255, 90, 31, 0.08);
+  box-shadow: 0 0 0 6px rgba(255, 251, 242, 0.6);
+  animation: big-stamp-in 0.5s cubic-bezier(0.2, 1.6, 0.4, 1) both;
+}
+@keyframes big-stamp-in {
+  0% {
+    transform: rotate(-9deg) scale(3);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(-9deg) scale(1);
+    opacity: 1;
+  }
 }
 
 /* ---------- DISCO MODE 🕺 (tap the finger-ball) ---------- */

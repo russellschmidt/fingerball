@@ -1,10 +1,12 @@
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useFeedData, scoreFor, myVote } from '../lib/data'
+import { useFeedData, scoreFor, myVote, upvotesFor } from '../lib/data'
 import { useAuth } from '../auth'
 import { supabase } from '../lib/supabase'
 import { HAPPY, OPINION, type FeedEvent } from '../lib/types'
 import { fxUp, fxDown, fxUndo } from '../lib/fx'
 import FingerBall from './FingerBall'
+import BloodyFinger from './BloodyFinger'
 
 function timeAgo(iso: string): string {
   const s = Math.floor((Date.now() - new Date(iso).getTime()) / 1000)
@@ -18,6 +20,7 @@ export default function Feed() {
   const { member, signOut } = useAuth()
   const { people, members, votes, superlatives, events, loading } = useFeedData()
   const navigate = useNavigate()
+  const [view, setView] = useState<'feed' | 'rankings'>('feed')
 
   const nameOf = (uid: string) => members[uid]?.display_name ?? 'someone'
   const personName = (id: string | null) =>
@@ -74,6 +77,17 @@ export default function Feed() {
         </div>
       </header>
 
+      <div className="segmented">
+        <button className={view === 'feed' ? 'on' : ''} onClick={() => setView('feed')}>
+          🔥 Feed
+        </button>
+        <button className={view === 'rankings' ? 'on' : ''} onClick={() => setView('rankings')}>
+          🏆 Rankings
+        </button>
+      </div>
+
+      {view === 'feed' && (
+        <>
       {events.length > 0 && (
         <div className="ticker">
           {events.slice(0, 8).map((e) => (
@@ -100,6 +114,12 @@ export default function Feed() {
           const mine = myVote(votes, p.id, member?.id)
           return (
             <article className="card person" key={p.id}>
+              {p.is_fingerballer && <span className="stamp baller">Fingerballer</span>}
+              {p.is_fingerballed && (
+                <span className="stamp balled">
+                  <BloodyFinger /> Fingerballed
+                </span>
+              )}
               <Link to={`/person/${p.id}`} className="person-main">
                 {p.image_url ? (
                   <img className="avatar" src={p.image_url} alt={p.name} />
@@ -138,6 +158,42 @@ export default function Feed() {
           )
         })}
       </main>
+        </>
+      )}
+
+      {view === 'rankings' && (
+        <ol className="ranks">
+          {people.length === 0 && <p className="muted center">No rankings yet.</p>}
+          {[...people]
+            .sort(
+              (a, b) =>
+                scoreFor(votes, b.id) - scoreFor(votes, a.id) ||
+                upvotesFor(votes, b.id) - upvotesFor(votes, a.id),
+            )
+            .map((p, idx) => {
+              const score = scoreFor(votes, p.id)
+              const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : null
+              return (
+                <li
+                  className="rank-row"
+                  key={p.id}
+                  onClick={() => navigate(`/person/${p.id}`)}
+                >
+                  <span className="rank-num">{medal ?? idx + 1}</span>
+                  {p.image_url ? (
+                    <img className="avatar tiny" src={p.image_url} alt={p.name} />
+                  ) : (
+                    <div className="avatar tiny placeholder">{p.name.slice(0, 1).toUpperCase()}</div>
+                  )}
+                  <span className="rank-name">{p.name}</span>
+                  {p.is_fingerballer && <span className="rank-badge">🏀</span>}
+                  {p.is_fingerballed && <span className="rank-badge">🩸</span>}
+                  <span className={`score ${score > 0 ? 'pos' : score < 0 ? 'neg' : ''}`}>{score}</span>
+                </li>
+              )
+            })}
+        </ol>
+      )}
 
       <button className="fab" onClick={() => navigate('/add')} aria-label="Add person">
         ＋

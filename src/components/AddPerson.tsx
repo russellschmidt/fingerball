@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase'
 import { useAuth } from '../auth'
 import { compressImage } from '../lib/image'
 import { fxSwish } from '../lib/fx'
+import Celebration from './Celebration'
 import { HAPPY, HAPPY_LABEL, OPINION, OPINION_LABEL } from '../lib/types'
 
 export default function AddPerson() {
@@ -19,6 +20,7 @@ export default function AddPerson() {
   const [supInput, setSupInput] = useState('')
   const [sups, setSups] = useState<string[]>([])
   const [busy, setBusy] = useState(false)
+  const [celebrating, setCelebrating] = useState(false)
   const [err, setErr] = useState<string | null>(null)
 
   function onPhoto(e: React.ChangeEvent<HTMLInputElement>) {
@@ -87,7 +89,8 @@ export default function AddPerson() {
       })
 
       fxSwish()
-      navigate('/')
+      setCelebrating(true)
+      setTimeout(() => navigate('/'), 1200)
     } catch (e: any) {
       setErr(e.message ?? 'Something went wrong')
       setBusy(false)
@@ -96,6 +99,7 @@ export default function AddPerson() {
 
   return (
     <div className="screen">
+      {celebrating && <Celebration label="SCORED" />}
       <header className="topbar">
         <button className="ghost" onClick={() => navigate('/')}>
           ← Back

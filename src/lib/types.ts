@@ -14,6 +14,8 @@ export type Person = {
   opinion_change: number | null
   interesting_facts: string | null
   merged_into: string | null
+  is_fingerballer?: boolean
+  is_fingerballed?: boolean
   created_at: string
 }
 
