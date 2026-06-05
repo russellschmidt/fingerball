@@ -19,6 +19,15 @@ implanted in it and a ball on the end, spinning in an endless loop.
 
 Everything runs on free tiers — $0 to operate.
 
+## Design
+
+Mobile-first "toy sticker / arcade trading card" aesthetic: warm cream paper with
+a tangerine glow and fine grain, near-black ink, **hard-offset shadows** (cards
+and buttons physically depress on tap), and a tangerine/magenta/lime palette.
+Type is **Bricolage Grotesque** (display) + **Hanken Grotesk** (body), loaded from
+Google Fonts in `index.html`. All styling lives in `src/index.css` (plain CSS,
+CSS variables, safe-area insets, staggered load animations) — no UI framework.
+
 ## Local development
 
 ```bash
@@ -83,17 +92,27 @@ events onto the canonical card.
 ```
 src/
   auth.tsx            Auth context (session + member row)
+  index.css           Full design system (cream/sticker theme)
   lib/
     supabase.ts       Supabase client
     types.ts          Shared types + emoji scales
     data.ts           useFeedData() hook + realtime subscription
+    image.ts          Client-side image compression (canvas, no deps)
   components/
     FingerBall.tsx    The spinning finger/rod/ball (SVG + CSS)
     Login.tsx         Google sign-in + email fallback
     ClaimName.tsx     First-login unique display-name claim
     Feed.tsx          Activity ticker + people cards + voting
-    AddPerson.tsx     New-person form (photo, emoji scales, superlatives)
+    AddPerson.tsx     New-person form (camera-roll photo, emoji scales, superlatives)
     PersonDetail.tsx  Full card, suggest superlative, merge
 supabase/migrations/
   0001_init.sql       Schema, RLS, functions, storage, realtime
 ```
+
+## Photos
+
+The photo picker uses a plain `<input type="file" accept="image/*">` (no `capture`
+attribute) so phones offer the full native sheet including the camera roll. On
+submit, `compressImage()` (`src/lib/image.ts`) resizes to max 1280px and
+re-encodes as JPEG (~0.82 quality) before uploading to the Supabase
+`people-photos` bucket — turning multi-MB phone photos into a few hundred KB.

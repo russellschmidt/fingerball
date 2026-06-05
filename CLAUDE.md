@@ -38,6 +38,20 @@ everything; you may only write rows attributed to yourself. `useFeedData()`
 (`src/lib/data.ts`) loads everything and subscribes to ALL public table changes,
 debounce-refetching on any change — simple and fine at this scale.
 
+## UI / design
+Mobile-first "toy sticker / arcade trading card" look — warm cream paper, grain,
+hard-offset shadows (`--shadow*` vars; elements `translate` + collapse shadow on
+`:active`), tangerine/magenta/lime accents. Fonts: Bricolage Grotesque (display)
++ Hanken Grotesk (body) via Google Fonts link in `index.html`. ALL styling is in
+`src/index.css` as plain CSS — no Tailwind/UI lib. Keep new UI consistent with
+the existing CSS variables and the `.card`/sticker-shadow conventions.
+
+## Photos
+`AddPerson.tsx` photo input has NO `capture` attr (so the camera roll shows). On
+submit it runs `compressImage()` (`src/lib/image.ts`, canvas-based, zero deps:
+resize to 1280px + JPEG ~0.82, EXIF-aware, falls back to original) before
+uploading to the `people-photos` Supabase bucket.
+
 ## Gotchas
 - Supabase **Auth → URL Configuration** must whitelist the app origin
   (`https://fingerball.netlify.app` + `http://localhost:5173`) or OAuth/magic-link
