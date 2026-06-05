@@ -13,10 +13,18 @@ export default function AddPerson() {
   const [opinion, setOpinion] = useState<number | null>(null)
   const [facts, setFacts] = useState('')
   const [file, setFile] = useState<File | null>(null)
+  const [preview, setPreview] = useState<string | null>(null)
   const [supInput, setSupInput] = useState('')
   const [sups, setSups] = useState<string[]>([])
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState<string | null>(null)
+
+  function onPhoto(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0] ?? null
+    setFile(f)
+    if (preview) URL.revokeObjectURL(preview)
+    setPreview(f ? URL.createObjectURL(f) : null)
+  }
 
   function addSup() {
     const t = supInput.trim()
@@ -96,7 +104,17 @@ export default function AddPerson() {
         <input required value={name} onChange={(e) => setName(e.target.value)} placeholder="Who is it?" />
 
         <label className="field-label">Photo (optional)</label>
-        <input type="file" accept="image/*" capture="environment" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+        <label className="photo-pick">
+          {preview ? (
+            <>
+              <img className="photo-preview" src={preview} alt="preview" />
+              <span className="photo-hint">Tap to change</span>
+            </>
+          ) : (
+            <span className="photo-cta">🖼️ Choose from camera roll</span>
+          )}
+          <input type="file" accept="image/*" onChange={onPhoto} hidden />
+        </label>
 
         <label className="field-label">Happy to see us?</label>
         <div className="emoji-pick">

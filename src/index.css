@@ -535,6 +535,38 @@ select:focus {
   transform: translate(-1px, -1px);
 }
 
+.photo-pick {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 96px;
+  padding: 14px;
+  border: 2px dashed var(--ink);
+  border-radius: var(--r);
+  background: var(--paper-2);
+  cursor: pointer;
+}
+.photo-cta {
+  font-family: var(--display);
+  font-weight: 700;
+  color: var(--ink);
+}
+.photo-preview {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 2px solid var(--ink);
+  box-shadow: var(--shadow-sm);
+}
+.photo-hint {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
 .sup-add {
   display: flex;
   gap: 9px;
