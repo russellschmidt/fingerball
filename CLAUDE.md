@@ -22,11 +22,11 @@ netlify deploy --prod --dir=dist   # ship to https://fingerball.netlify.app
 ```
 
 ## Auth
-Primary = **Google OAuth** (`signInWithOAuth`). We started with email magic links
-but Supabase's built-in mailer rate-limited at ~2–4/hr — too low for a login rush
-at a reunion — so Google became primary. The email magic-link path still exists in
-`Login.tsx` as a fallback but shares that rate limit; remove it if all friends use
-Google. (Reliable email would need custom SMTP, e.g. Resend + a verified domain.)
+**Google OAuth only** (`signInWithOAuth`). We started with email magic links but
+Supabase's built-in mailer rate-limited at ~2–4/hr — too low for a login rush at a
+reunion — so we switched to Google and removed the email fallback entirely. If you
+ever re-add email auth, reliable delivery needs custom SMTP (e.g. Resend + a
+verified domain).
 
 After auth, a user with no `members` row is sent to `ClaimName` to pick a unique
 display name; that row is what everything else is attributed to.

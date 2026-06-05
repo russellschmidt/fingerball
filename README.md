@@ -14,7 +14,7 @@ implanted in it and a ball on the end, spinning in an endless loop.
 |---|---|
 | Frontend | Vite + React + TypeScript (PWA via `vite-plugin-pwa`) |
 | Backend | [Supabase](https://supabase.com) — Postgres + Auth + Storage + Realtime |
-| Auth | Google OAuth (one-tap); email magic-link as a fallback |
+| Auth | Google OAuth (one-tap) |
 | Hosting | Netlify (static) |
 
 Everything runs on free tiers — $0 to operate.
@@ -100,7 +100,7 @@ src/
     image.ts          Client-side image compression (canvas, no deps)
   components/
     FingerBall.tsx    The spinning finger/rod/ball (SVG + CSS)
-    Login.tsx         Google sign-in + email fallback
+    Login.tsx         Google sign-in
     ClaimName.tsx     First-login unique display-name claim
     Feed.tsx          Activity ticker + people cards + voting
     AddPerson.tsx     New-person form (camera-roll photo, emoji scales, superlatives)
