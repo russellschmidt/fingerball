@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../auth'
 import { compressImage } from '../lib/image'
+import { fxSwish } from '../lib/fx'
 import { HAPPY, HAPPY_LABEL, OPINION, OPINION_LABEL } from '../lib/types'
 
 export default function AddPerson() {
@@ -85,6 +86,7 @@ export default function AddPerson() {
         payload: { name: name.trim() },
       })
 
+      fxSwish()
       navigate('/')
     } catch (e: any) {
       setErr(e.message ?? 'Something went wrong')

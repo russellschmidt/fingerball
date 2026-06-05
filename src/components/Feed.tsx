@@ -3,6 +3,7 @@ import { useFeedData, scoreFor, myVote } from '../lib/data'
 import { useAuth } from '../auth'
 import { supabase } from '../lib/supabase'
 import { HAPPY, OPINION, type FeedEvent } from '../lib/types'
+import { fxUp, fxDown, fxUndo } from '../lib/fx'
 import FingerBall from './FingerBall'
 
 function timeAgo(iso: string): string {
@@ -42,8 +43,10 @@ export default function Feed() {
     if (!member) return
     const current = myVote(votes, personId, member.id)
     if (current === value) {
+      fxUndo()
       await supabase.from('votes').delete().eq('person_id', personId).eq('member_id', member.id)
     } else {
+      value > 0 ? fxUp() : fxDown()
       await supabase
         .from('votes')
         .upsert({ person_id: personId, member_id: member.id, value }, { onConflict: 'person_id,member_id' })

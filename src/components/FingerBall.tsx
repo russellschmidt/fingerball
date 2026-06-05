@@ -1,10 +1,23 @@
+import { fxDisco } from '../lib/fx'
+
 type Props = { size?: number; speed?: number }
 
 // A finger with a steel rod surgically implanted in the fingertip, with a ball
 // on the end. The whole rig spins in an endless loop. Pure SVG + CSS.
+// Tap it to toggle DISCO MODE. 🕺
 export default function FingerBall({ size = 120, speed = 3.5 }: Props) {
+  function toggleDisco() {
+    const on = document.body.classList.toggle('disco')
+    fxDisco(on)
+  }
   return (
-    <div className="fingerball" style={{ width: size, height: size }}>
+    <div
+      className="fingerball"
+      style={{ width: size, height: size }}
+      onClick={toggleDisco}
+      role="button"
+      title="tap me 🕺"
+    >
       <svg
         viewBox="0 0 240 240"
         width={size}

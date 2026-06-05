@@ -4,6 +4,7 @@ import { useFeedData, scoreFor, myVote } from '../lib/data'
 import { useAuth } from '../auth'
 import { supabase } from '../lib/supabase'
 import { HAPPY, HAPPY_LABEL, OPINION, OPINION_LABEL } from '../lib/types'
+import { fxUp, fxDown, fxUndo } from '../lib/fx'
 
 export default function PersonDetail() {
   const { id } = useParams<{ id: string }>()
@@ -26,8 +27,10 @@ export default function PersonDetail() {
   async function vote(value: number) {
     if (!member || !person) return
     if (mine === value) {
+      fxUndo()
       await supabase.from('votes').delete().eq('person_id', person.id).eq('member_id', member.id)
     } else {
+      value > 0 ? fxUp() : fxDown()
       await supabase
         .from('votes')
         .upsert({ person_id: person.id, member_id: member.id, value }, { onConflict: 'person_id,member_id' })
