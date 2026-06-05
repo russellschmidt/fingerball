@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../auth'
+import { compressImage } from '../lib/image'
 import { HAPPY, HAPPY_LABEL, OPINION, OPINION_LABEL } from '../lib/types'
 
 export default function AddPerson() {
@@ -40,11 +41,13 @@ export default function AddPerson() {
     try {
       let image_url: string | null = null
       if (file) {
-        const ext = file.name.split('.').pop() || 'jpg'
+        const img = await compressImage(file)
+        const ext = img.name.split('.').pop() || 'jpg'
         const path = `${crypto.randomUUID()}.${ext}`
-        const up = await supabase.storage.from('people-photos').upload(path, file, {
+        const up = await supabase.storage.from('people-photos').upload(path, img, {
           cacheControl: '3600',
           upsert: false,
+          contentType: img.type,
         })
         if (up.error) throw up.error
         image_url = supabase.storage.from('people-photos').getPublicUrl(path).data.publicUrl
