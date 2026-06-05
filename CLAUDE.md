@@ -47,10 +47,18 @@ hard-offset shadows (`--shadow*` vars; elements `translate` + collapse shadow on
 the existing CSS variables and the `.card`/sticker-shadow conventions.
 
 ## Photos
-`AddPerson.tsx` photo input has NO `capture` attr (so the camera roll shows). On
-submit it runs `compressImage()` (`src/lib/image.ts`, canvas-based, zero deps:
-resize to 1280px + JPEG ~0.82, EXIF-aware, falls back to original) before
-uploading to the `people-photos` Supabase bucket.
+`AddPerson.tsx` offers two pickers: "Camera roll" (plain file input) and "Camera"
+(file input + `capture="environment"`), plus a thumbnail preview. On submit it
+runs `compressImage()` (`src/lib/image.ts`, canvas-based, zero deps: resize to
+1280px + JPEG ~0.82, EXIF-aware, falls back to original) before uploading to the
+`people-photos` Supabase bucket.
+
+## Juice (sound/haptics/disco)
+`src/lib/fx.ts` = zero-asset Web Audio sound effects + `navigator.vibrate` haptics
+(Android only; iOS ignores vibrate). Call fx functions from inside the tap handler
+BEFORE any await so iOS resumes the audio context on the gesture. Votes call
+fxUp/fxDown/fxUndo; adds call fxSwish. Tapping `FingerBall` toggles `body.disco`
+(all disco styling is `body.disco …` rules in `index.css`) and plays fxDisco.
 
 ## Gotchas
 - Supabase **Auth → URL Configuration** must whitelist the app origin

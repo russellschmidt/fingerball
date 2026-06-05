@@ -538,36 +538,40 @@ select:focus {
   transform: translate(-1px, -1px);
 }
 
-.photo-pick {
+.photo-actions {
   display: flex;
-  flex-direction: column;
+  gap: 10px;
+}
+.photo-btn {
+  flex: 1;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-height: 96px;
-  padding: 14px;
+  gap: 6px;
+  padding: 15px 10px;
   border: 2px dashed var(--ink);
   border-radius: var(--r);
   background: var(--paper-2);
-  cursor: pointer;
-}
-.photo-cta {
   font-family: var(--display);
   font-weight: 700;
-  color: var(--ink);
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.photo-btn:active {
+  transform: translate(2px, 2px);
+}
+.photo-preview-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
 }
 .photo-preview {
-  width: 110px;
-  height: 110px;
+  width: 120px;
+  height: 120px;
   object-fit: cover;
-  border-radius: 16px;
+  border-radius: 18px;
   border: 2px solid var(--ink);
   box-shadow: var(--shadow-sm);
-}
-.photo-hint {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--ink-soft);
 }
 
 .sup-add {

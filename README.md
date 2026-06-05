@@ -92,12 +92,13 @@ events onto the canonical card.
 ```
 src/
   auth.tsx            Auth context (session + member row)
-  index.css           Full design system (cream/sticker theme)
+  index.css           Full design system (cream/sticker theme) + disco mode
   lib/
     supabase.ts       Supabase client
     types.ts          Shared types + emoji scales
     data.ts           useFeedData() hook + realtime subscription
     image.ts          Client-side image compression (canvas, no deps)
+    fx.ts             Synthesized sound effects + haptics (Web Audio, no deps)
   components/
     FingerBall.tsx    The spinning finger/rod/ball (SVG + CSS)
     Login.tsx         Google sign-in
@@ -111,8 +112,18 @@ supabase/migrations/
 
 ## Photos
 
-The photo picker uses a plain `<input type="file" accept="image/*">` (no `capture`
-attribute) so phones offer the full native sheet including the camera roll. On
-submit, `compressImage()` (`src/lib/image.ts`) resizes to max 1280px and
-re-encodes as JPEG (~0.82 quality) before uploading to the Supabase
-`people-photos` bucket — turning multi-MB phone photos into a few hundred KB.
+Two picker buttons: **Camera roll** (`<input type="file" accept="image/*">`) and
+**Camera** (same, plus `capture="environment"` to open the camera directly). A
+chosen photo shows a live thumbnail preview. On submit, `compressImage()`
+(`src/lib/image.ts`) resizes to max 1280px and re-encodes as JPEG (~0.82 quality)
+before uploading to the Supabase `people-photos` bucket — turning multi-MB phone
+photos into a few hundred KB.
+
+## Juice & easter eggs
+
+- **Sound + haptics** (`src/lib/fx.ts`): synthesized Web Audio (no files) plays a
+  boing on upvote, womp on downvote, tick on undo, and a swish when a person is
+  added; `navigator.vibrate` adds haptics on Android (iOS ignores it).
+- **Disco mode** 🕺: tap the spinning finger-ball anywhere to toggle a rainbow
+  dance-floor — animated gradient background, double-speed spin, wobbling cards,
+  color-cycling logo, and a sparkle arpeggio. Tap again to turn it off.

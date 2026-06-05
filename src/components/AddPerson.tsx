@@ -109,17 +109,21 @@ export default function AddPerson() {
         <input required value={name} onChange={(e) => setName(e.target.value)} placeholder="Who is it?" />
 
         <label className="field-label">Photo (optional)</label>
-        <label className="photo-pick">
-          {preview ? (
-            <>
-              <img className="photo-preview" src={preview} alt="preview" />
-              <span className="photo-hint">Tap to change</span>
-            </>
-          ) : (
-            <span className="photo-cta">🖼️ Choose from camera roll</span>
-          )}
-          <input type="file" accept="image/*" onChange={onPhoto} hidden />
-        </label>
+        {preview && (
+          <div className="photo-preview-wrap">
+            <img className="photo-preview" src={preview} alt="preview" />
+          </div>
+        )}
+        <div className="photo-actions">
+          <label className="photo-btn">
+            🖼️ Camera roll
+            <input type="file" accept="image/*" onChange={onPhoto} hidden />
+          </label>
+          <label className="photo-btn">
+            📸 Camera
+            <input type="file" accept="image/*" capture="environment" onChange={onPhoto} hidden />
+          </label>
+        </div>
 
         <label className="field-label">Happy to see us?</label>
         <div className="emoji-pick">
